@@ -6,21 +6,23 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
-		"lint": "NODE_NO_WARNINGS=1 biome lint .",
-		"format": "biome format .",
+		"biome:lint": "NODE_NO_WARNINGS=1 biome lint ./src",
+		"biome:format": "biome format ./src",
+		"biome:check": "biome check ./src",
 		"preview": "vite preview"
 	},
 	"dependencies": {
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react-dom": "^18.3.1",
+		"uuid": "^11.0.5"
 	},
 	"devDependencies": {
 		"@types/react": "^18.3.18",
 		"@types/react-dom": "^18.3.5",
 		"@vitejs/plugin-react": "^4.3.4",
+		"axios": "^0.21.1",
 		"biome": "^0.3.3",
 		"typescript": "~5.6.2",
-		"vite": "^6.0.5",
-		"axios": "^0.21.1"
+		"vite": "^6.0.5"
 	}
 }
