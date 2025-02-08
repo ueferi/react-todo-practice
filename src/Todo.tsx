@@ -50,6 +50,7 @@ export const TodoApp: React.FC = () => {
 	const filteredTodos = todos.filter((todo) => {
 		return (
 			(filter.id === undefined ||
+				filter.id === null ||
 				todo.id.toString().includes(filter.id.toString())) &&
 			(!filter.title || todo.title.includes(filter.title)) &&
 			(!filter.status || todo.status === filter.status)
@@ -127,7 +128,10 @@ export const TodoApp: React.FC = () => {
 					type="text"
 					placeholder="IDで絞り込み"
 					onChange={(e) =>
-						setFilter({ ...filter, id: Number.parseInt(e.target.value) })
+						setFilter({
+							...filter,
+							id: e.target.value ? Number.parseInt(e.target.value) : undefined,
+						})
 					}
 				/>
 				<input
