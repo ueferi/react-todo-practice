@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 type Todo = {
-	id: string;
+	id: number;
 	title: string;
 	status: "未着手" | "進行中" | "完了";
 	detail: string;
@@ -14,10 +13,11 @@ export const TodoApp: React.FC = () => {
 	const [detail, setDetail] = useState("");
 	const [status, setStatus] = useState<"未着手" | "進行中" | "完了">("未着手");
 	const [filter, setFilter] = useState<Partial<Todo>>({});
+	const [idCounter, setIdCounter] = useState(0);
 
 	const addTodo = (): void => {
 		const newTodo: Todo = {
-			id: uuidv4(),
+			id: idCounter,
 			title,
 			status,
 			detail,
@@ -26,13 +26,14 @@ export const TodoApp: React.FC = () => {
 		setTitle("");
 		setDetail("");
 		setStatus("未着手");
+		setIdCounter(idCounter + 1);
 	};
 
-	const deleteTodo = (id: string): void => {
+	const deleteTodo = (id: number): void => {
 		setTodos(todos.filter((todo) => todo.id !== id));
 	};
 
-	const editTodo = (id: string, updatedTodo: Partial<Todo>): void => {
+	const editTodo = (id: number, updatedTodo: Partial<Todo>): void => {
 		setTodos(
 			todos.map((todo) =>
 				todo.id === id ? { ...todo, ...updatedTodo } : todo,
@@ -42,7 +43,8 @@ export const TodoApp: React.FC = () => {
 
 	const filteredTodos = todos.filter((todo) => {
 		return (
-			(!filter.id || todo.id.includes(filter.id)) &&
+			(filter.id === undefined ||
+				todo.id.toString().includes(filter.id.toString())) &&
 			(!filter.title || todo.title.includes(filter.title)) &&
 			(!filter.status || todo.status === filter.status)
 		);
@@ -83,7 +85,9 @@ export const TodoApp: React.FC = () => {
 				<input
 					type="text"
 					placeholder="IDで絞り込み"
-					onChange={(e) => setFilter({ ...filter, id: e.target.value })}
+					onChange={(e) =>
+						setFilter({ ...filter, id: Number.parseInt(e.target.value) })
+					}
 				/>
 				<input
 					type="text"
